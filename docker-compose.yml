@@ -10,12 +10,13 @@ services:
             - ./:/app
         depends_on:
             - mongodb
+            
             - rabibitmq
         networks:
             - mynetwork
     mongodb:
         image: mongo:latest
-        container_name: mongodb
+        container_name: mongodb_node
         ports:
             - "27017:27017"
         networks:

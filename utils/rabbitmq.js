@@ -3,7 +3,6 @@ export const consumeQueue = async (channel, queueName) => {
         await channel.assertQueue(queueName, { durable: true });
 
         let msg = [];
-        channel.prefetch(1);
         channel.consume(queueName, async (message) => {
             const data = JSON.parse(message.content.toString());
             // Send success response to the reply-to queue
@@ -11,8 +10,10 @@ export const consumeQueue = async (channel, queueName) => {
             if (data?.replyToQueue)
                 channel.sendToQueue(replyToQueue, Buffer.from(successMessage));
 
-            msg.push(data);
             channel.ack(message);
+            const temp = [];
+            temp.push(data);
+            msg = temp;
         });
         if (msg.length > 0) return msg;
     }

@@ -45,16 +45,3 @@ async function recieveData() {
     }
 }
 export { sendData, recieveData };
-
-// let content;
-//         if (!channel) return false;
-//         await channel.consume("test-queue", async (data) => {
-//             if (data !== null) {
-//                 channel.ack(data);
-//                 content = JSON.parse(Buffer.from(data.content));
-//                 console.log(`Received data from queue: ${content}`);
-//                 channel.ack(data);
-//             }
-//             return content;
-//         });
-//         return content;
