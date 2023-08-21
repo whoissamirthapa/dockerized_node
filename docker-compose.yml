@@ -3,6 +3,7 @@ services:
     app:
         build: .
         image: node-first
+        container_name: app
         ports:
             - "5000:5000"
         volumes:
@@ -10,7 +11,24 @@ services:
         depends_on:
             - mongodb
             
+            - rabibitmq
+        networks:
+            - mynetwork
     mongodb:
-        image: mongo
+        image: mongo:latest
+        container_name: mongodb_node
         ports:
             - "27017:27017"
+        networks:
+            - mynetwork
+    rabibitmq:
+        image: rabbitmq
+        container_name: rabbitmq
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+        networks:
+            - mynetwork
+networks:
+    mynetwork:
+        driver: bridge
