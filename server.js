@@ -27,3 +27,11 @@ app.listen(5000, () => {
     console.log("App is running at port" + 5000);
     connectQueue();
 });
+
+// app.get("/api/recieve-data-from-queue", async (req, res) => {
+//     // send data to queue
+//     const data = await recieveData();
+//     if (!data) return res.status(400).json({ success: false, msg: "No data" });
+//     console.log("recieved in api", data);
+//     return res.status(200).json({ success: true, data });
+// });
