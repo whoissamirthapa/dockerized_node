@@ -3,7 +3,8 @@ import { connection } from "../config/rabbitmq.js";
 
 export class RabbitClass {
     static pubChannel;
-    static StartConsumer(queue, fnConsumer) {
+    static StartConsumer(exchangeName, queue, routingKey, fnConsumer) {
+        console.log("routing key ", routingKey);
         if (!connection)
             return console.log("rabbitmq connection is not initialized");
         connection.createChannel(async function (err, ch) {
@@ -20,10 +21,10 @@ export class RabbitClass {
             ch.prefetch(1);
             // Connect to queue
             // If we use direct exchange, we need to declare queue and bind queue with exchange
-            await ch.assertExchange("test-exchange", "direct", {
+            await ch.assertExchange(exchangeName, "topic", {
                 durable: true,
             });
-            await ch.bindQueue(queue, "test-exchange", "");
+            await ch.bindQueue(queue, exchangeName, routingKey);
             // when we use fanout exchange, we don't need to declare queue
             //When we use fanout exchange, we don't need to bind queue with exchange
             // await ch.assertExchange("test-exchange1", "fanout", {
@@ -89,7 +90,9 @@ export class RabbitClass {
 
                     // Set publisher channel in a var
                     this.pubChannel = ch;
-                    console.log("rabbitmq Publisher started");
+                    console.log(
+                        "rabbitmq Publisher started with queue " + queueName
+                    );
                 }
             );
         });

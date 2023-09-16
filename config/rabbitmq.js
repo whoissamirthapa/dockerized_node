@@ -1,5 +1,5 @@
 import rabbitmq from "amqplib/callback_api.js";
-
+import "dotenv/config.js";
 let channel, connection; //global variables
 async function connectQueue(callback) {
     try {
@@ -7,7 +7,7 @@ async function connectQueue(callback) {
             process.env.RABBITMQ_URL || "amqp://rabbitmq:5672",
             (err, conn) => {
                 if (err) {
-                    console.log("RabbitMQ", err.message);
+                    console.log("RabbitMQ CONNECT ERROR", err.message);
                     return setTimeout(this, 1000);
                 }
                 conn.on("error", (err) => {
