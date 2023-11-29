@@ -8,9 +8,14 @@ services:
             - "5000:5000"
         volumes:
             - ./:/app
+        environment:
+            - PORT=${PORT}
+            - MONGO_URI=${MONGO_URI}
+            - RABBITMQ_URl=${RABBITMQ_URl}
+            - REDIS_URI=${REDIS_URI}
         depends_on:
             - mongodb
-            
+
             - rabibitmq
         networks:
             - mynetwork
@@ -27,6 +32,13 @@ services:
         ports:
             - "5672:5672"
             - "15672:15672"
+        networks:
+            - mynetwork
+    redis:
+        image: redis
+        container_name: redis
+        ports:
+            - "6379:6379"
         networks:
             - mynetwork
 networks:

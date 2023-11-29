@@ -9,6 +9,8 @@ import fs from "fs";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import winston from "winston";
+import RedisRouter from "./src/redis/exec.js";
+import "dotenv/config.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -101,6 +103,8 @@ app.use(
     })
 );
 
+app.use("/api/redis", RedisRouter);
+
 app.get("/", (req, res) => {
     res.send("hello there");
 });
@@ -164,8 +168,11 @@ app.get("/api/v1", (req, res) => {
     res.status(200).json({ msg: "hello there from api" });
 });
 
-app.listen(5000, () => {
-    console.log("App is running at port" + 5000);
+const PORT = process.env.PORT || 5001;
+
+app.listen(PORT, () => {
+    console.log("App is running at port" + PORT);
+
     return;
     connectQueue(function () {
         consumer();
